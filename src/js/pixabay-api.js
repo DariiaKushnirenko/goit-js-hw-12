@@ -4,9 +4,13 @@ import "izitoast/dist/css/iziToast.min.css";
 
 import axios from "axios";
 
- export function getImagesByQuery(query) {
+let query = '';
+let page = 1;
+let perPage = 15;
+
+export function getImagesByQuery(query, page) {
     return axios
-        .get(`https://pixabay.com/api/?key=49722241-b38f1bcf58efdc2f53696c0dc&q=${query}&image_type=photo&orientation=horizontal&safesearch=true`)
+        .get(`https://pixabay.com/api/?key=49722241-b38f1bcf58efdc2f53696c0dc&q=${query}&page=${page}&per_page=15&image_type=photo&orientation=horizontal&safesearch=true`)
         .then(response => {
             const data = response.data;
             if (data.hits.length === 0) {
@@ -22,14 +26,14 @@ import axios from "axios";
                     transitionIn: 'fadeInDown',
                     transitionOut: 'fadeOutUp',
                 });
-                
             }
-                return data.hits;
+           return {
+            images: data.hits,
+            totalHits: data.totalHits
+           };
             })
-        
             .catch(error => {
             console.log(error);
             throw error;
         });
-    
 }

@@ -5,7 +5,6 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
 const gallery = document.querySelector(".gallery");
-const form = document.querySelector('.form');
 
 function createGallery(images) {
   const markup = images.map(image => `
@@ -51,47 +50,21 @@ function hideLoader() {
   loader.classList.remove("is-visible"); 
 }
 
-function fetchImages(query) {
-  console.log("Fetching images for query: ", query);
-  showLoader(); 
-  getImagesByQuery(query)
-    .then(images => {
-      console.log("Received images: ", images);
-      clearGallery();  
-      createGallery(images);  
-      hideLoader();  
-    })
-    .catch(error => {
-      hideLoader();  
-      iziToast.show({
-        title: 'Error',
-        message: "Something went wrong. Please try again later.",
-        position: "topRight",
-        backgroundColor: "#ef4040",
-        messageColor: "#fff",
-        timeout: 5000,
-        progressBar: false,
-        close: true,
-        transitionIn: 'fadeInDown',
-        transitionOut: 'fadeOutUp',
-      });
-    });
+function showLoadMoreButton() {
+  const MoreBtn = document.querySelector(".MoreBtn"); 
+  MoreBtn.classList.add("is-visible");  
 }
 
-form.addEventListener('submit', event => {
-  event.preventDefault(); 
-
-  const query = event.target.elements['search-text'].value.trim();
-
-  if (query === '') return;
-
-  fetchImages(query);
-});
+function hideLoadMoreButton(){
+  const MoreBtn = document.querySelector(".MoreBtn"); 
+  MoreBtn.classList.remove("is-visible"); 
+}
 
 export {
   createGallery,
   clearGallery,
   showLoader,
   hideLoader,
-  fetchImages,
+  showLoadMoreButton,
+  hideLoadMoreButton,
 };
